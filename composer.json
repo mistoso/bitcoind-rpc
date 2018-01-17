@@ -1,0 +1,20 @@
+{
+    "name": "yarcode/bitcoin-rpc",
+    "description":"",
+    "type": "yii2-extension",
+    "license": "MIT",
+	"keywords": ["yii2"],
+
+    "minimum-stability": "stable",
+
+    "require": {
+        "php":">=5.4.0",
+	"yiisoft/yii2": "~2",
+        "fguillot/json-rpc": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "yarcode\\bitcoinrpc\\": "./src"
+        }
+    }
+}
