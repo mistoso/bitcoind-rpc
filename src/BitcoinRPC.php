@@ -14,8 +14,6 @@ class BitcoinRPC
 
     public function __construct($host, $port, $user, $password)
     {
-        assert(isset($host, $port, $user, $password));
-
         $client = new Client("http://{$host}:{$port}/");
         $client->authentication($user, $password);
 
