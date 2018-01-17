@@ -519,7 +519,7 @@ class BitcoinRPC
      */
     public function importPrivKey($bitcoinPrivKey, $label, $rescan = true)
     {
-        return $this->call('bitcoinprivkey', [$bitcoinPrivKey, $label, $rescan]);
+        return $this->call('importprivkey', [$bitcoinPrivKey, $label, $rescan]);
     }
 
     /**
