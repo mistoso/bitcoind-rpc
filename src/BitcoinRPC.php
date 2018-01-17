@@ -7,12 +7,6 @@ namespace YarCode\Bitcoin;
 
 use JsonRPC\Client;
 
-/**
- * Class BitcoinRPC
- * @package common\components
- *
- * @link https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_calls_list
- */
 class BitcoinRPC
 {
     public $host;
@@ -23,8 +17,13 @@ class BitcoinRPC
     /** @var Client */
     protected $client;
 
-    public function __construct()
+    public function __construct($host, $port, $user, $password)
     {
+        $this->host = $host;
+        $this->port = $port;
+        $this->user = $user;
+        $this->password = $password;
+
         assert(isset($this->host, $this->port, $this->user, $this->password));
 
         $client = new Client("http://{$this->host}:{$this->port}/");
