@@ -92,7 +92,17 @@ class BitcoinRPC
         return $this->call('createmultisig', [$nRequired, $keys]);
     }
 
-    //public function createRawTransaction()
+    /**
+     * Creates a raw transaction spending given inputs
+     *
+     * @param $params
+     * @param $addresses
+     * @return mixed
+     */
+    public function createRawTransaction($params, $addresses)
+    {
+        return $this->call('createrawtransaction', [$params, $addresses]);
+    }
 
     /**
      * Produces a human-readable JSON object for a raw transaction
@@ -130,12 +140,12 @@ class BitcoinRPC
     /**
      *    Encrypts the wallet with <passphrase>
      *
-     * @param string $passphrase
+     * @param string $passPhrase
      * @return mixed
      */
-    public function encryptWallet($passphrase)
+    public function encryptWallet($passPhrase)
     {
-        return $this->call('encryptwallet', [$passphrase]);
+        return $this->call('encryptwallet', [$passPhrase]);
     }
 
     /**
@@ -448,7 +458,7 @@ class BitcoinRPC
     }
 
     /**
-     * 	Returns details about an unspent transaction output (UTXO)
+     *    Returns details about an unspent transaction output (UTXO)
      *
      * @param $txid
      * @param $n
@@ -637,6 +647,115 @@ class BitcoinRPC
     public function sendFrom($fromAccount, $toBitcoinAddress, $amount, $minConf = 1, $comment, $commentTo)
     {
         return $this->call('sendfrom', [$fromAccount, $toBitcoinAddress, $amount, $minConf, $comment, $commentTo]);
+    }
+
+    /**
+     * amounts are double-precision floating point numbers
+     *
+     * @param $fromAccount
+     * @param $addresses
+     * @param int $minConf
+     * @param $comment
+     * @return mixed
+     */
+    public function sendMany($fromAccount, $addresses, $minConf = 1, $comment)
+    {
+        return $this->call('sendmany', [$fromAccount, $addresses, $minConf, $comment]);
+    }
+
+    /**
+     * Submits raw transaction (serialized, hex-encoded) to local node and network
+     *
+     * @param $hexstring
+     * @return mixed
+     */
+    public function sendRawTransaction($hexstring)
+    {
+        return $this->call('sendrawtransaction', $hexstring);
+    }
+
+    /**
+     * Sets the account associated with the given address.
+     * Assigning address that is already assigned to the same account will create a new address associated with that account
+     *
+     * @param $address
+     * @param null $account
+     * @return mixed
+     */
+    public function setAccount($address, $account = null)
+    {
+        return $this->call('setaccount', [$address, $account]);
+    }
+
+    /**
+     *    <generate> is true or false to turn generation on or off.
+     * Generation is limited to [genproclimit] processors, -1 is unlimited
+     *
+     * @param $generate
+     * @param $genprocLimit
+     * @return mixed
+     */
+    public function setGenerate($generate, $genprocLimit)
+    {
+        return $this->call('setgenerate', [$generate, $genprocLimit]);
+    }
+
+    /**
+     * <amount> is a real and is rounded to the nearest 0.00000001
+     *
+     * @param $amount
+     * @return mixed
+     */
+    public function setTxFee($amount)
+    {
+        return $this->call('settxfee', $amount);
+    }
+
+    /**
+     * Sign a message with the private key of an address
+     *
+     * @param $address
+     * @param $message
+     * @return mixed
+     */
+    public function signMessage($address, $message)
+    {
+        return $this->call('signmessage', [$address, $message]);
+    }
+
+    /**
+     * Adds signatures to a raw transaction and returns the resulting raw transaction
+     *
+     * @param $hexstring
+     * @param $params
+     * @param $privateKeys
+     * @return mixed
+     */
+    public function signRawTransaction($hexstring, $params, $privateKeys)
+    {
+        return $this->call('signrawtransaction', [$hexstring, $params, $privateKeys]);
+    }
+
+    /**
+     * Stop bitcoin server
+     *
+     * @return mixed
+     */
+    public function stop()
+    {
+        return $this->call('stop');
+    }
+
+    /**
+     * Attempts to submit new block to network
+     *
+     * @param $hexData
+     * @param $optionalParamsObj
+     * @return mixed
+     */
+    public function submitBlock($hexData, $optionalParamsObj)
+    {
+        return $this->call('submitblock', [$hexData, $optionalParamsObj]);
     }
 
     /**
