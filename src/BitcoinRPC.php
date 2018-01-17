@@ -9,25 +9,15 @@ use JsonRPC\Client;
 
 class BitcoinRPC
 {
-    public $host;
-    public $port;
-    public $user;
-    public $password;
-
     /** @var Client */
     protected $client;
 
     public function __construct($host, $port, $user, $password)
     {
-        $this->host = $host;
-        $this->port = $port;
-        $this->user = $user;
-        $this->password = $password;
+        assert(isset($host, $port, $user, $password));
 
-        assert(isset($this->host, $this->port, $this->user, $this->password));
-
-        $client = new Client("http://{$this->host}:{$this->port}/");
-        $client->authentication($this->user, $this->password);
+        $client = new Client("http://{$host}:{$port}/");
+        $client->authentication($user, $password);
 
         $this->client = $client;
     }
@@ -138,7 +128,7 @@ class BitcoinRPC
     }
 
     /**
-     * 	Encrypts the wallet with <passphrase>
+     *    Encrypts the wallet with <passphrase>
      *
      * @param string $passphrase
      * @return mixed
@@ -154,7 +144,7 @@ class BitcoinRPC
      * @param string $address
      * @return array
      */
-    public function getAccount($address)
+    public function getAccount($address = null)
     {
         return $this->call('getaccount', [$address]);
     }
@@ -166,7 +156,7 @@ class BitcoinRPC
      * @param string $account
      * @return string
      */
-    public function getAccountAddress($account)
+    public function getAccountAddress($account = null)
     {
         return $this->call('getaccountaddress', [$account]);
     }
@@ -190,7 +180,7 @@ class BitcoinRPC
      * @param string $account
      * @return array
      */
-    public function getAddressesByAccount($account)
+    public function getAddressesByAccount($account = null)
     {
         return $this->call('getaddressesbyaccount', [$account]);
     }
@@ -248,7 +238,7 @@ class BitcoinRPC
      */
     public function getBlockHash($index)
     {
-        return $this->call('getblockhash',[$index]);
+        return $this->call('getblockhash', [$index]);
     }
 
     /**
@@ -262,6 +252,17 @@ class BitcoinRPC
     }
 
     /**
+     * Returns data needed to construct a block to work on. See BIP_0022 for more info on params
+     *
+     * @param array $params
+     * @return mixed
+     */
+    public function getBlockTemplate($params)
+    {
+        return $this->call('getblocktemplate', [$params]);
+    }
+
+    /**
      * Returns the number of connections to other nodes.
      *
      * @return integer
@@ -271,9 +272,34 @@ class BitcoinRPC
         return $this->call('getconnectioncount');
     }
 
+    /**
+     * Returns the proof-of-work difficulty as a multiple of the minimum difficulty
+     *
+     * @return mixed
+     */
     public function getDifficulty()
     {
+        return $this->call('getdifficulty');
+    }
 
+    /**
+     * Returns true or false whether bitcoind is currently generating hashes
+     *
+     * @return mixed
+     */
+    public function getGenerate()
+    {
+        return $this->call('getgenerate');
+    }
+
+    /**
+     * Returns a recent hashes per second performance measurement while generating
+     *
+     * @return mixed
+     */
+    public function getHashesPerSec()
+    {
+        return $this->call('gethashespersec');
     }
 
     /**
@@ -284,6 +310,26 @@ class BitcoinRPC
     public function getInfo()
     {
         return $this->call('getinfo');
+    }
+
+    /**
+     * Returns an object containing mining-related information:
+     * blocks
+     * currentblocksize
+     * currentblocktx
+     * difficulty
+     * errors
+     * generate
+     * genproclimit
+     * hashespersec
+     * pooledtx
+     * testnet
+     *
+     * @return mixed
+     */
+    public function getMiningInfo()
+    {
+        return $this->call('getmininginfo');
     }
 
     /**
@@ -307,6 +353,194 @@ class BitcoinRPC
     public function getNewAddress($account = null)
     {
         return $this->call('getnewaddress', [$account]);
+    }
+
+    /**
+     * Returns data about each connected node
+     *
+     * @return mixed
+     */
+    public function getPeerInfo()
+    {
+        return $this->call('getpeerinfo');
+    }
+
+    /**
+     * Returns a new Bitcoin address, for receiving change. This is for use with raw transactions, NOT normal use
+     *
+     * @param null|string $account
+     * @return mixed
+     */
+    public function getRawChangeAddress($account = null)
+    {
+        return $this->call('getrawchangeaddress', [$account]);
+    }
+
+    /**
+     * Returns all transaction ids in memory pool
+     *
+     * @return mixed
+     */
+    public function getRawMemPool()
+    {
+        return $this->call('getrawmempool');
+    }
+
+    /**
+     * Returns raw transaction representation for given transaction id
+     *
+     * @param string $txid
+     * @param null $verbose
+     * @return mixed
+     */
+    public function getRawTransaction($txid, $verbose = null)
+    {
+        return $this->call('getrawtransaction', [$txid, $verbose]);
+    }
+
+    /**
+     * Returns the total amount received by addresses with [account] in transactions with at least [minconf] confirmations.
+     * If [account] not provided return will include all transactions to all accounts
+     *
+     * @param null|string $account
+     * @param int $minConf
+     * @return mixed
+     */
+    public function getReceivedByAccount($account = null, $minConf = 1)
+    {
+        return $this->call('getreceivedbyaccount', [$account, $minConf]);
+    }
+
+    /**
+     * Returns the amount received by <bitcoinaddress> in transactions with at least [minconf] confirmations.
+     * It correctly handles the case where someone has sent to the address in multiple transactions.
+     * Keep in mind that addresses are only ever used for receiving transactions.
+     * Works only for addresses in the local wallet, external addresses will always show 0
+     *
+     * @param string $address
+     * @param int $minConf
+     * @return mixed
+     */
+    public function getReceivedByAddress($address, $minConf = 1)
+    {
+        return $this->call('getreceivedbyaddress', [$address, $minConf]);
+    }
+
+    /**
+     * Returns an object about the given transaction containing:
+     * "amount" : total amount of the transaction
+     * "confirmations" : number of confirmations of the transaction
+     * "txid" : the transaction ID
+     * "time" : time associated with the transaction[1].
+     * "details" - An array of objects containing:
+     *  "account"
+     *  "address"
+     *  "category"
+     *  "amount"
+     *  "fee"
+     *
+     * @param string $txid
+     * @return mixed
+     */
+    public function getTransaction($txid)
+    {
+        return $this->call('gettransaction', $txid);
+    }
+
+    /**
+     * 	Returns details about an unspent transaction output (UTXO)
+     *
+     * @param $txid
+     * @param $n
+     * @param bool $includeMemPool
+     * @return mixed
+     */
+    public function getTxout($txid, $n, $includeMemPool = true)
+    {
+        return $this->call('gettxout', [$txid, $n, $includeMemPool]);
+    }
+
+    /**
+     * Returns statistics about the unspent transaction output (UTXO) set
+     *
+     * @return mixed
+     */
+    public function getTxoutSetInfo()
+    {
+        return $this->call('gettxoutsetinfo');
+    }
+
+    /**
+     * If [data] is not specified, returns formatted hash data to work on:
+     * "midstate" : precomputed hash state after hashing the first half of the data
+     * "data" : block data
+     * "hash1" : formatted hash buffer for second hash
+     * "target" : little endian hash target
+     * If [data] is specified, tries to solve the block and returns true if it was successful.
+     *
+     * @param $data
+     * @return mixed
+     */
+    public function getWork($data)
+    {
+        return $this->call('getwork', [$data]);
+    }
+
+    /**
+     * List commands, or get help for a command
+     *
+     * @param $command
+     * @return mixed
+     */
+    public function help($command)
+    {
+        return $this->call('help', [$command]);
+    }
+
+    /**
+     * Adds a private key (as returned by dumpprivkey) to your wallet.
+     * This may take a while, as a rescan is done, looking for existing transactions. Optional [rescan] parameter added in 0.8.0.
+     * Note: There's no need to import public key, as in ECDSA (unlike RSA) this can be computed from private key.
+     *
+     * @param $bitcoinPrivKey
+     * @param $label
+     * @param bool $rescan
+     * @return mixed
+     */
+    public function importPrivKey($bitcoinPrivKey, $label, $rescan = true)
+    {
+        return $this->call('bitcoinprivkey', [$bitcoinPrivKey, $label, $rescan]);
+    }
+
+    /**
+     * Permanently marks a block as invalid, as if it violated a consensus rule
+     *
+     * @param $hash
+     * @return mixed
+     */
+    public function invalidateBlock($hash)
+    {
+        return $this->call('invalidateblock', [$hash]);
+    }
+
+    /**
+     * Fills the keypool, requires wallet passphrase to be set
+     *
+     * @return mixed
+     */
+    public function keypoolRefill()
+    {
+        return $this->call('keypoolrefill');
+    }
+
+    /**
+     * Returns all addresses in the wallet and info used for coincontrol
+     *
+     * @return mixed
+     */
+    public function listAddressGroupings()
+    {
+        return $this->call('listaddressgroupings');
     }
 
     /**
@@ -339,6 +573,73 @@ class BitcoinRPC
     }
 
     /**
+     * Returns array of unspent transaction inputs in the wallet
+     *
+     * @param int $minConf
+     * @param int $maxConf
+     * @return mixed
+     */
+    public function listUnspent($minConf = 1, $maxConf = 999999)
+    {
+        return $this->call('listunspent', [$minConf, $maxConf]);
+    }
+
+    /**
+     * Returns list of temporarily unspendable outputs
+     *
+     * @return mixed
+     */
+    public function listLockUnspent()
+    {
+        return $this->call('listlockunspent');
+    }
+
+    /**
+     * Updates list of temporarily unspendable outputs
+     *
+     * @param $unlock
+     * @param $arrayOfObjects
+     * @return mixed
+     */
+    public function lockUnspent($unlock, $arrayOfObjects)
+    {
+        return $this->call('lockunspent', [$unlock, $arrayOfObjects]);
+    }
+
+    /**
+     * Move from one account in your wallet to another
+     *
+     * @param string $fromAccount
+     * @param string $toAccount
+     * @param $amount
+     * @param int $minConf
+     * @param string $comment
+     * @return mixed
+     */
+    public function move($fromAccount, $toAccount, $amount, $minConf = 1, $comment)
+    {
+        return $this->call('move', [$fromAccount, $toAccount, $amount, $minConf, $comment]);
+    }
+
+    /**
+     * <amount> is a real and is rounded to 8 decimal places.
+     * Will send the given amount to the given address, ensuring the account has a valid balance using [minconf] confirmations.
+     * Returns the transaction ID if successful (not in JSON object)
+     *
+     * @param $fromAccount
+     * @param $toBitcoinAddress
+     * @param $amount
+     * @param int $minConf
+     * @param $comment
+     * @param $commentTo
+     * @return mixed
+     */
+    public function sendFrom($fromAccount, $toBitcoinAddress, $amount, $minConf = 1, $comment, $commentTo)
+    {
+        return $this->call('sendfrom', [$fromAccount, $toBitcoinAddress, $amount, $minConf, $comment, $commentTo]);
+    }
+
+    /**
      * Returns an array of objects containing:
      * "address" : receiving address
      * "account" : the account of the receiving address
@@ -353,6 +654,19 @@ class BitcoinRPC
     public function listReceivedByAddress($minConf = null, $includeEmpty = null)
     {
         return $this->call('listreceivedbyaddress', [$minConf, $includeEmpty]);
+    }
+
+    /**
+     * Get all transactions in blocks since block [blockhash], or all transactions if omitted.
+     * [target-confirmations] intentionally does not affect the list of returned transactions, but only affects the returned "lastblock" value
+     *
+     * @param $blockHash
+     * @param $targetConfirmations
+     * @return mixed
+     */
+    public function listSinceBlock($blockHash, $targetConfirmations)
+    {
+        return $this->call('listsinceblock', [$blockHash, $targetConfirmations]);
     }
 
     /**
