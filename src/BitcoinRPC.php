@@ -464,7 +464,7 @@ class BitcoinRPC
      */
     public function getTransaction($txid)
     {
-        return $this->call('gettransaction', $txid);
+        return $this->call('gettransaction', [$txid]);
     }
 
     /**
@@ -681,7 +681,7 @@ class BitcoinRPC
      */
     public function sendRawTransaction($hexstring)
     {
-        return $this->call('sendrawtransaction', $hexstring);
+        return $this->call('sendrawtransaction', [$hexstring]);
     }
 
     /**
@@ -718,7 +718,7 @@ class BitcoinRPC
      */
     public function setTxFee($amount)
     {
-        return $this->call('settxfee', $amount);
+        return $this->call('settxfee', [$amount]);
     }
 
     /**
