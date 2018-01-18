@@ -1,9 +1,10 @@
 {
     "name": "yarcode/bitcoind-rpc",
-    "description":"",
-    "type": "yii2-extension",
+    "description":"Bitcoin JSON-RPC client",
+    "type": "library",
+	"keywords": ["bitcoin","api","jsonrpc"],
+    "homepage": "https://github.com/yarcode/bitcoind-rpc",
     "license": "MIT",
-	"keywords": ["yii2"],
 
     "minimum-stability": "stable",
 

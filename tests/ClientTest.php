@@ -23,7 +23,7 @@ class ClientTest extends TestCase
             ->setMethods(array('execute'))
             ->getMock();
 
-        $this->client->method('execute')->will($this->returnValue('OK'));
+        $this->client->method('execute')->will($this->returnValue(true));
         $this->bitcoinRPC = new BitcoinRPC($this->client);
     }
 
@@ -34,7 +34,7 @@ class ClientTest extends TestCase
 
     public function testGetBalance()
     {
-        $this->assertTrue($this->bitcoinRPC->getBalance() === 'OK' && method_exists($this->bitcoinRPC, 'getBalance'));
+        $this->assertTrue($this->bitcoinRPC->getBalance());
     }
 
     public function testAddMultiSigAddress()
@@ -342,63 +342,28 @@ class ClientTest extends TestCase
         $this->assertTrue($this->bitcoinRPC->sendToAddress('address',123, 'comment', 'commentTo') === 'OK' && method_exists($this->bitcoinRPC, 'sendToAddress'));
     }
 
-    /**
-     * Return information about <bitcoinaddress>.
-     *
-     * @param string $address
-     * @return mixed
-     */
-    public function validateAddress($address)
+    public function testValidateAddress()
     {
-        return $this->call('validateaddress', [$address]);
+        $this->assertTrue($this->bitcoinRPC->validateAddress('address') === 'OK' && method_exists($this->bitcoinRPC, 'validateAddress'));
     }
 
-    /**
-     * Verify a signed message.
-     *
-     * @param string $address
-     * @param string $signature
-     * @param string $message
-     * @return mixed
-     */
-    public function verifyMessage($address, $signature, $message)
+    public function testVerifyMessage()
     {
-        return $this->call('verifymessage', [$address, $signature, $message]);
+        $this->assertTrue($this->bitcoinRPC->verifyMessage('address', 'signature', 'message') === 'OK' && method_exists($this->bitcoinRPC, 'verifyMessage'));
     }
 
-    /**
-     * Removes the wallet encryption key from memory, locking the wallet.
-     * After calling this method, you will need to call walletpassphrase again before being able to call any methods
-     * which require the wallet to be unlocked.
-     *
-     * @return mixed
-     */
-    public function walletLock()
+    public function testWalletLock()
     {
-        return $this->call('walletlock');
+        $this->assertTrue($this->bitcoinRPC->walletLock() === 'OK' && method_exists($this->bitcoinRPC, 'walletLock'));
     }
 
-    /**
-     * Stores the wallet decryption key in memory for <timeout> seconds.
-     *
-     * @param string $passPhrase
-     * @param int $timeout
-     * @return mixed
-     */
-    public function walletPassPhrase($passPhrase, $timeout)
+    public function testWalletPassPhrase()
     {
-        return $this->call('walletpassphrase', [$passPhrase, $timeout]);
+        $this->assertTrue($this->bitcoinRPC->walletPassPhrase('passPhrase', 1000) === 'OK' && method_exists($this->bitcoinRPC, 'walletPassPhrase'));
     }
 
-    /**
-     * Changes the wallet passphrase from <oldpassphrase> to <newpassphrase>.
-     *
-     * @param string $oldPassPhrase
-     * @param string $newPassPhrase
-     * @return mixed
-     */
-    public function walletPassPhraseChange($oldPassPhrase, $newPassPhrase)
+    public function testWalletPassPhraseChange()
     {
-        return $this->call('walletpassphrasechange', [$oldPassPhrase, $newPassPhrase]);
+        $this->assertTrue($this->bitcoinRPC->walletPassPhraseChange('oldPassPhrase', 'newPassPhrase') === 'OK' && method_exists($this->bitcoinRPC, 'walletPassPhraseChange'));
     }
 }
