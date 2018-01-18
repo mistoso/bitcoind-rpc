@@ -39,12 +39,12 @@ class ClientTest extends TestCase
 
     public function testAddMultiSigAddress()
     {
-        $this->assertTrue($this->bitcoinRPC->addMultiSigAddress(1,[1]) === 'OK' && method_exists($this->bitcoinRPC, 'addMultiSigAddress'));
+        $this->assertTrue($this->bitcoinRPC->addMultiSigAddress(1, [1]) === 'OK' && method_exists($this->bitcoinRPC, 'addMultiSigAddress'));
     }
 
     public function testAddNode()
     {
-        $this->assertTrue($this->bitcoinRPC->addNode(1,'add') === 'OK' && method_exists($this->bitcoinRPC, 'addNode'));
+        $this->assertTrue($this->bitcoinRPC->addNode(1, 'add') === 'OK' && method_exists($this->bitcoinRPC, 'addNode'));
     }
 
     public function testBackupWallet()
@@ -54,706 +54,292 @@ class ClientTest extends TestCase
 
     public function testCreateMultiSig()
     {
-        $this->assertTrue($this->bitcoinRPC->createMultiSig(1,[1]) === 'OK' && method_exists($this->bitcoinRPC, 'createMultiSig'));
+        $this->assertTrue($this->bitcoinRPC->createMultiSig(1, [1]) === 'OK' && method_exists($this->bitcoinRPC, 'createMultiSig'));
     }
 
-    /**
-     * Creates a raw transaction spending given inputs
-     *
-     * @param $params
-     * @param $addresses
-     * @return mixed
-     */
-    public function createRawTransaction($params, $addresses)
+    public function testCreateRawTransaction()
     {
-        return $this->call('createrawtransaction', [$params, $addresses]);
+        $this->assertTrue($this->bitcoinRPC->createRawTransaction(1, 1) === 'OK' && method_exists($this->bitcoinRPC, 'createRawTransaction'));
     }
 
-    /**
-     * Produces a human-readable JSON object for a raw transaction
-     *
-     * @param string $hexString
-     * @return mixed
-     */
-    public function decodeRawTransaction($hexString)
+    public function testDecodeRawTransaction()
     {
-        return $this->call('decoderawtransaction', [$hexString]);
+        $this->assertTrue($this->bitcoinRPC->decodeRawTransaction('hex') === 'OK' && method_exists($this->bitcoinRPC, 'decodeRawTransaction'));
     }
 
-    /**
-     * Reveals the private key corresponding to <bitcoinaddress>
-     *
-     * @param string $address
-     * @return mixed
-     */
-    public function dumpPrivKey($address)
+    public function testDumpPrivKey()
     {
-        return $this->call('dumpprivkey', [$address]);
+        $this->assertTrue($this->bitcoinRPC->dumpPrivKey('address') === 'OK' && method_exists($this->bitcoinRPC, 'dumpPrivKey'));
     }
 
-    /**
-     * Exports all wallet private keys to file
-     *
-     * @param string $filename
-     * @return mixed
-     */
-    public function dumpWallet($filename)
+    public function testDumpWallet()
     {
-        return $this->call('dumpwallet', [$filename]);
+        $this->assertTrue($this->bitcoinRPC->dumpWallet('filename') === 'OK' && method_exists($this->bitcoinRPC, 'dumpWallet'));
     }
 
-    /**
-     *    Encrypts the wallet with <passphrase>
-     *
-     * @param string $passPhrase
-     * @return mixed
-     */
-    public function encryptWallet($passPhrase)
+    public function testEncryptWallet()
     {
-        return $this->call('encryptwallet', [$passPhrase]);
+        $this->assertTrue($this->bitcoinRPC->encryptWallet('passPhrase') === 'OK' && method_exists($this->bitcoinRPC, 'encryptWallet'));
     }
 
-    /**
-     * Returns the account associated with the given address.
-     *
-     * @param string $address
-     * @return array
-     */
-    public function getAccount($address = null)
+    public function testGetAccount()
     {
-        return $this->call('getaccount', [$address]);
+        $this->assertTrue($this->bitcoinRPC->getAccount('address') === 'OK' && method_exists($this->bitcoinRPC, 'getAccount'));
     }
 
-    /**
-     * Returns the current bitcoin address for receiving payments to this account.
-     * If <account> does not exist, it will be created along with an associated new address that will be returned.
-     *
-     * @param string $account
-     * @return string
-     */
-    public function getAccountAddress($account = null)
+    public function testGetAccountAddress()
     {
-        return $this->call('getaccountaddress', [$account]);
+        $this->assertTrue($this->bitcoinRPC->getAccountAddress('account') === 'OK' && method_exists($this->bitcoinRPC, 'getAccountAddress'));
     }
 
-    /**
-     * Returns information about the given added node, or all added nodes
-     * (note that onetry addnodes are not listed here) If dns is false, only a list of added nodes will be provided, otherwise connected information will also be available
-     *
-     * @param string $dns
-     * @param array $node
-     * @return mixed
-     */
-    public function getAddedNodeInfo($dns, $node)
+    public function testGetAddedNodeInfo()
     {
-        return $this->call('getaddednodeinfo', [$dns, $node]);
+        $this->assertTrue($this->bitcoinRPC->getAddedNodeInfo('dns', [1]) === 'OK' && method_exists($this->bitcoinRPC, 'getAddedNodeInfo'));
     }
 
-    /**
-     * Returns the list of addresses for the given account.
-     *
-     * @param string $account
-     * @return array
-     */
-    public function getAddressesByAccount($account = null)
+    public function testGetAddressesByAccount()
     {
-        return $this->call('getaddressesbyaccount', [$account]);
+        $this->assertTrue($this->bitcoinRPC->getAddressesByAccount('account') === 'OK' && method_exists($this->bitcoinRPC, 'getAddressesByAccount'));
     }
 
-
-    /**
-     * Returns the hash of the best (tip) block in the longest block chain.
-     *
-     * @return string
-     * @since 0.9
-     */
-    public function getBestBlockHash()
+    public function testGetBestBlockHash()
     {
-        return $this->call('getbestblockhash');
+        $this->assertTrue($this->bitcoinRPC->getBestBlockHash() === 'OK' && method_exists($this->bitcoinRPC, 'getBestBlockHash'));
     }
 
-    /**
-     * Returns information about the block with the given hash.
-     *
-     * @param string $hash
-     * @return array
-     */
-    public function getBlock($hash)
+    public function testGetBlock()
     {
-        return $this->call('getblock', [$hash]);
+        $this->assertTrue($this->bitcoinRPC->getBlock('hash') === 'OK' && method_exists($this->bitcoinRPC, 'getBlock'));
     }
 
-    /**
-     * Returns the number of blocks in the longest block chain.
-     *
-     * @return integer
-     */
-    public function getBlockCount()
+    public function testGetBlockCount()
     {
-        return $this->call('getblockcount');
+        $this->assertTrue($this->bitcoinRPC->getBlockCount() === 'OK' && method_exists($this->bitcoinRPC, 'getBlockCount'));
     }
 
-    /**
-     * Returns hash of block in best-block-chain at <index>; index 0 is the genesis block.
-     *
-     * @param integer $index
-     * @return string
-     */
-    public function getBlockHash($index)
+    public function testGetBlockHash()
     {
-        return $this->call('getblockhash', [$index]);
+        $this->assertTrue($this->bitcoinRPC->getBlockHash('index') === 'OK' && method_exists($this->bitcoinRPC, 'getBlockHash'));
     }
 
-    /**
-     * Use getblockcount
-     *
-     * @return mixed
-     */
-    public function getBlockNumber()
+    public function testGetBlockNumber()
     {
-        return $this->call('getblockcount');
+        $this->assertTrue($this->bitcoinRPC->getBlockNumber() === 'OK' && method_exists($this->bitcoinRPC, 'getBlockNumber'));
     }
 
-    /**
-     * Returns data needed to construct a block to work on. See BIP_0022 for more info on params
-     *
-     * @param array $params
-     * @return mixed
-     */
-    public function getBlockTemplate($params)
+    public function testGetBlockTemplate()
     {
-        return $this->call('getblocktemplate', [$params]);
+        $this->assertTrue($this->bitcoinRPC->getBlockTemplate(['params']) === 'OK' && method_exists($this->bitcoinRPC, 'getBlockTemplate'));
     }
 
-    /**
-     * Returns the number of connections to other nodes.
-     *
-     * @return integer
-     */
-    public function getConnectionCount()
+    public function testGetConnectionCount()
     {
-        return $this->call('getconnectioncount');
+        $this->assertTrue($this->bitcoinRPC->getConnectionCount() === 'OK' && method_exists($this->bitcoinRPC, 'getConnectionCount'));
     }
 
-    /**
-     * Returns the proof-of-work difficulty as a multiple of the minimum difficulty
-     *
-     * @return mixed
-     */
-    public function getDifficulty()
+    public function testGetDifficulty()
     {
-        return $this->call('getdifficulty');
+        $this->assertTrue($this->bitcoinRPC->getDifficulty() === 'OK' && method_exists($this->bitcoinRPC, 'getDifficulty'));
     }
 
-    /**
-     * Returns true or false whether bitcoind is currently generating hashes
-     *
-     * @return mixed
-     */
-    public function getGenerate()
+    public function testGetGenerate()
     {
-        return $this->call('getgenerate');
+        $this->assertTrue($this->bitcoinRPC->getGenerate() === 'OK' && method_exists($this->bitcoinRPC, 'getGenerate'));
     }
 
-    /**
-     * Returns a recent hashes per second performance measurement while generating
-     *
-     * @return mixed
-     */
-    public function getHashesPerSec()
+    public function testGetHashesPerSec()
     {
-        return $this->call('gethashespersec');
+        $this->assertTrue($this->bitcoinRPC->getHashesPerSec() === 'OK' && method_exists($this->bitcoinRPC, 'getHashesPerSec'));
     }
 
-    /**
-     * Returns an object containing various state info.
-     *
-     * @return array
-     */
-    public function getInfo()
+    public function testGetInfo()
     {
-        return $this->call('getinfo');
+        $this->assertTrue($this->bitcoinRPC->getInfo() === 'OK' && method_exists($this->bitcoinRPC, 'getInfo'));
     }
 
-    /**
-     * Returns an object containing mining-related information:
-     * blocks
-     * currentblocksize
-     * currentblocktx
-     * difficulty
-     * errors
-     * generate
-     * genproclimit
-     * hashespersec
-     * pooledtx
-     * testnet
-     *
-     * @return mixed
-     */
-    public function getMiningInfo()
+    public function testGetMiningInfo()
     {
-        return $this->call('getmininginfo');
+        $this->assertTrue($this->bitcoinRPC->getMiningInfo() === 'OK' && method_exists($this->bitcoinRPC, 'getMiningInfo'));
     }
 
-    /**
-     * Object that has account names as keys, account balances as values.
-     *
-     * @param null|int $minConf default 1
-     * @return array
-     */
-    public function listAccounts($minConf = null)
+    public function testListAccounts()
     {
-        return $this->call('listaccounts', [$minConf]);
+        $this->assertTrue($this->bitcoinRPC->listAccounts(1) === 'OK' && method_exists($this->bitcoinRPC, 'listAccounts'));
     }
 
-    /**
-     * Returns a new bitcoin address for receiving payments.
-     * If [account] is specified payments received with the address will be credited to [account].
-     *
-     * @param null|string $account
-     * @return string
-     */
-    public function getNewAddress($account = null)
+    public function testGetNewAddress()
     {
-        return $this->call('getnewaddress', [$account]);
+        $this->assertTrue($this->bitcoinRPC->getNewAddress('account') === 'OK' && method_exists($this->bitcoinRPC, 'getNewAddress'));
     }
 
-    /**
-     * Returns data about each connected node
-     *
-     * @return mixed
-     */
-    public function getPeerInfo()
+    public function testGetPeerInfo()
     {
-        return $this->call('getpeerinfo');
+        $this->assertTrue($this->bitcoinRPC->getPeerInfo() === 'OK' && method_exists($this->bitcoinRPC, 'getPeerInfo'));
     }
 
-    /**
-     * Returns a new Bitcoin address, for receiving change. This is for use with raw transactions, NOT normal use
-     *
-     * @param null|string $account
-     * @return mixed
-     */
-    public function getRawChangeAddress($account = null)
+    public function testGetRawChangeAddress()
     {
-        return $this->call('getrawchangeaddress', [$account]);
+        $this->assertTrue($this->bitcoinRPC->getRawChangeAddress('account') === 'OK' && method_exists($this->bitcoinRPC, 'getRawChangeAddress'));
     }
 
-    /**
-     * Returns all transaction ids in memory pool
-     *
-     * @return mixed
-     */
-    public function getRawMemPool()
+    public function testGetRawMemPool()
     {
-        return $this->call('getrawmempool');
+        $this->assertTrue($this->bitcoinRPC->getRawMemPool() === 'OK' && method_exists($this->bitcoinRPC, 'getRawMemPool'));
     }
 
-    /**
-     * Returns raw transaction representation for given transaction id
-     *
-     * @param string $txid
-     * @param null $verbose
-     * @return mixed
-     */
-    public function getRawTransaction($txid, $verbose = null)
+    public function testGetRawTransaction()
     {
-        return $this->call('getrawtransaction', [$txid, $verbose]);
+        $this->assertTrue($this->bitcoinRPC->getRawTransaction('txid', 1) === 'OK' && method_exists($this->bitcoinRPC, 'getRawTransaction'));
     }
 
-    /**
-     * Returns the total amount received by addresses with [account] in transactions with at least [minconf] confirmations.
-     * If [account] not provided return will include all transactions to all accounts
-     *
-     * @param null|string $account
-     * @param int $minConf
-     * @return mixed
-     */
-    public function getReceivedByAccount($account = null, $minConf = 1)
+    public function testGetReceivedByAccount()
     {
-        return $this->call('getreceivedbyaccount', [$account, $minConf]);
+        $this->assertTrue($this->bitcoinRPC->getReceivedByAccount('account', 1) === 'OK' && method_exists($this->bitcoinRPC, 'getReceivedByAccount'));
     }
 
-    /**
-     * Returns the amount received by <bitcoinaddress> in transactions with at least [minconf] confirmations.
-     * It correctly handles the case where someone has sent to the address in multiple transactions.
-     * Keep in mind that addresses are only ever used for receiving transactions.
-     * Works only for addresses in the local wallet, external addresses will always show 0
-     *
-     * @param string $address
-     * @param int $minConf
-     * @return mixed
-     */
-    public function getReceivedByAddress($address, $minConf = 1)
+    public function testGetReceivedByAddress()
     {
-        return $this->call('getreceivedbyaddress', [$address, $minConf]);
+        $this->assertTrue($this->bitcoinRPC->getReceivedByAddress('address', 1) === 'OK' && method_exists($this->bitcoinRPC, 'getReceivedByAddress'));
     }
 
-    /**
-     * Returns an object about the given transaction containing:
-     * "amount" : total amount of the transaction
-     * "confirmations" : number of confirmations of the transaction
-     * "txid" : the transaction ID
-     * "time" : time associated with the transaction[1].
-     * "details" - An array of objects containing:
-     *  "account"
-     *  "address"
-     *  "category"
-     *  "amount"
-     *  "fee"
-     *
-     * @param string $txid
-     * @return mixed
-     */
-    public function getTransaction($txid)
+    public function testGetTransaction()
     {
-        return $this->call('gettransaction', $txid);
+        $this->assertTrue($this->bitcoinRPC->getTransaction('txid') === 'OK' && method_exists($this->bitcoinRPC, 'getTransaction'));
     }
 
-    /**
-     *    Returns details about an unspent transaction output (UTXO)
-     *
-     * @param $txid
-     * @param $n
-     * @param bool $includeMemPool
-     * @return mixed
-     */
-    public function getTxout($txid, $n, $includeMemPool = true)
+    public function testGetTxout()
     {
-        return $this->call('gettxout', [$txid, $n, $includeMemPool]);
+        $this->assertTrue($this->bitcoinRPC->getTxout('txid', 1, true) === 'OK' && method_exists($this->bitcoinRPC, 'getTxout'));
     }
 
-    /**
-     * Returns statistics about the unspent transaction output (UTXO) set
-     *
-     * @return mixed
-     */
-    public function getTxoutSetInfo()
+    public function testGetTxoutSetInfo()
     {
-        return $this->call('gettxoutsetinfo');
+        $this->assertTrue($this->bitcoinRPC->getTxoutSetInfo() === 'OK' && method_exists($this->bitcoinRPC, 'getTxoutSetInfo'));
     }
 
-    /**
-     * If [data] is not specified, returns formatted hash data to work on:
-     * "midstate" : precomputed hash state after hashing the first half of the data
-     * "data" : block data
-     * "hash1" : formatted hash buffer for second hash
-     * "target" : little endian hash target
-     * If [data] is specified, tries to solve the block and returns true if it was successful.
-     *
-     * @param $data
-     * @return mixed
-     */
-    public function getWork($data)
+    public function testGetWork()
     {
-        return $this->call('getwork', [$data]);
+        $this->assertTrue($this->bitcoinRPC->getWork('data') === 'OK' && method_exists($this->bitcoinRPC, 'getWork'));
     }
 
-    /**
-     * List commands, or get help for a command
-     *
-     * @param $command
-     * @return mixed
-     */
-    public function help($command)
+    public function testHelp()
     {
-        return $this->call('help', [$command]);
+        $this->assertTrue($this->bitcoinRPC->help('command') === 'OK' && method_exists($this->bitcoinRPC, 'help'));
     }
 
-    /**
-     * Adds a private key (as returned by dumpprivkey) to your wallet.
-     * This may take a while, as a rescan is done, looking for existing transactions. Optional [rescan] parameter added in 0.8.0.
-     * Note: There's no need to import public key, as in ECDSA (unlike RSA) this can be computed from private key.
-     *
-     * @param $bitcoinPrivKey
-     * @param $label
-     * @param bool $rescan
-     * @return mixed
-     */
-    public function importPrivKey($bitcoinPrivKey, $label, $rescan = true)
+    public function testImportPrivKey()
     {
-        return $this->call('importprivkey', [$bitcoinPrivKey, $label, $rescan]);
+        $this->assertTrue($this->bitcoinRPC->importPrivKey('privKey', 'label', true) === 'OK' && method_exists($this->bitcoinRPC, 'importPrivKey'));
     }
 
-    /**
-     * Permanently marks a block as invalid, as if it violated a consensus rule
-     *
-     * @param $hash
-     * @return mixed
-     */
-    public function invalidateBlock($hash)
+    public function testInvalidateBlock()
     {
-        return $this->call('invalidateblock', [$hash]);
+        $this->assertTrue($this->bitcoinRPC->invalidateBlock('hash') === 'OK' && method_exists($this->bitcoinRPC, 'invalidateBlock'));
     }
 
-    /**
-     * Fills the keypool, requires wallet passphrase to be set
-     *
-     * @return mixed
-     */
-    public function keypoolRefill()
+    public function testKeypoolRefill()
     {
-        return $this->call('keypoolrefill');
+        $this->assertTrue($this->bitcoinRPC->keypoolRefill() === 'OK' && method_exists($this->bitcoinRPC, 'keypoolRefill'));
     }
 
-    /**
-     * Returns all addresses in the wallet and info used for coincontrol
-     *
-     * @return mixed
-     */
-    public function listAddressGroupings()
+    public function testListAddressGroupings()
     {
-        return $this->call('listaddressgroupings');
+        $this->assertTrue($this->bitcoinRPC->listAddressGroupings() === 'OK' && method_exists($this->bitcoinRPC, 'listAddressGroupings'));
     }
 
-    /**
-     * Returns an array of objects containing:
-     * "account" : the account of the receiving addresses
-     * "amount" : total amount received by addresses with this account
-     * "confirmations" : number of confirmations of the most recent transaction included
-     *
-     * @param null|int $minConf default 1
-     * @param null|bool $includeEmpty default false
-     * @return array
-     */
-    public function listReceivedByAccount($minConf = null, $includeEmpty = null)
+    public function testListReceivedByAccount()
     {
-        return $this->call('listreceivedbyaccount', [$minConf, $includeEmpty]);
+        $this->assertTrue($this->bitcoinRPC->listReceivedByAccount(1, 1) === 'OK' && method_exists($this->bitcoinRPC, 'listReceivedByAccount'));
     }
 
-    /**
-     * Returns up to [count] most recent transactions skipping the first [from] transactions for account [account].
-     * If [account] not provided it'll return recent transactions from all accounts.
-     *
-     * @param null|string $account
-     * @param null|int $count default 10
-     * @param null|int $from default 0
-     * @return mixed
-     */
-    public function listTransactions($account = null, $count = null, $from = null)
+    public function testListTransactions()
     {
-        return $this->call('listtransactions', [$account, $count, $from]);
+        $this->assertTrue($this->bitcoinRPC->listTransactions('account', 1, 'from') === 'OK' && method_exists($this->bitcoinRPC, 'listTransactions'));
     }
 
-    /**
-     * Returns array of unspent transaction inputs in the wallet
-     *
-     * @param int $minConf
-     * @param int $maxConf
-     * @return mixed
-     */
-    public function listUnspent($minConf = 1, $maxConf = 999999)
+    public function testListUnspent()
     {
-        return $this->call('listunspent', [$minConf, $maxConf]);
+        $this->assertTrue($this->bitcoinRPC->listUnspent(1,10) === 'OK' && method_exists($this->bitcoinRPC, 'listUnspent'));
     }
 
-    /**
-     * Returns list of temporarily unspendable outputs
-     *
-     * @return mixed
-     */
-    public function listLockUnspent()
+    public function testListLockUnspent()
     {
-        return $this->call('listlockunspent');
+        $this->assertTrue($this->bitcoinRPC->listLockUnspent() === 'OK' && method_exists($this->bitcoinRPC, 'listLockUnspent'));
     }
 
-    /**
-     * Updates list of temporarily unspendable outputs
-     *
-     * @param $unlock
-     * @param $arrayOfObjects
-     * @return mixed
-     */
-    public function lockUnspent($unlock, $arrayOfObjects)
+    public function testLockUnspent()
     {
-        return $this->call('lockunspent', [$unlock, $arrayOfObjects]);
+        $this->assertTrue($this->bitcoinRPC->lockUnspent('unlock', [1]) === 'OK' && method_exists($this->bitcoinRPC, 'lockUnspent'));
     }
 
-    /**
-     * Move from one account in your wallet to another
-     *
-     * @param string $fromAccount
-     * @param string $toAccount
-     * @param $amount
-     * @param int $minConf
-     * @param string $comment
-     * @return mixed
-     */
-    public function move($fromAccount, $toAccount, $amount, $minConf = 1, $comment)
+    public function testMove()
     {
-        return $this->call('move', [$fromAccount, $toAccount, $amount, $minConf, $comment]);
+        $this->assertTrue($this->bitcoinRPC->move('from', 'to', 123, 1, 'comment') === 'OK' && method_exists($this->bitcoinRPC, 'move'));
     }
 
-    /**
-     * <amount> is a real and is rounded to 8 decimal places.
-     * Will send the given amount to the given address, ensuring the account has a valid balance using [minconf] confirmations.
-     * Returns the transaction ID if successful (not in JSON object)
-     *
-     * @param $fromAccount
-     * @param $toBitcoinAddress
-     * @param $amount
-     * @param int $minConf
-     * @param $comment
-     * @param $commentTo
-     * @return mixed
-     */
-    public function sendFrom($fromAccount, $toBitcoinAddress, $amount, $minConf = 1, $comment, $commentTo)
+    public function testSendFrom()
     {
-        return $this->call('sendfrom', [$fromAccount, $toBitcoinAddress, $amount, $minConf, $comment, $commentTo]);
+        $this->assertTrue($this->bitcoinRPC->sendFrom('from', 'to', 123, 1, 'comment', 'commentTo') === 'OK' && method_exists($this->bitcoinRPC, 'sendFrom'));
     }
 
-    /**
-     * amounts are double-precision floating point numbers
-     *
-     * @param $fromAccount
-     * @param $addresses
-     * @param int $minConf
-     * @param $comment
-     * @return mixed
-     */
-    public function sendMany($fromAccount, $addresses, $minConf = 1, $comment)
+    public function testSendMany()
     {
-        return $this->call('sendmany', [$fromAccount, $addresses, $minConf, $comment]);
+        $this->assertTrue($this->bitcoinRPC->sendMany('from', 'to', 123, 'comment') === 'OK' && method_exists($this->bitcoinRPC, 'sendMany'));
     }
 
-    /**
-     * Submits raw transaction (serialized, hex-encoded) to local node and network
-     *
-     * @param $hexstring
-     * @return mixed
-     */
-    public function sendRawTransaction($hexstring)
+    public function testSendRawTransaction()
     {
-        return $this->call('sendrawtransaction', $hexstring);
+        $this->assertTrue($this->bitcoinRPC->sendRawTransaction('string') === 'OK' && method_exists($this->bitcoinRPC, 'sendRawTransaction'));
     }
 
-    /**
-     * Sets the account associated with the given address.
-     * Assigning address that is already assigned to the same account will create a new address associated with that account
-     *
-     * @param $address
-     * @param null $account
-     * @return mixed
-     */
-    public function setAccount($address, $account = null)
+    public function testSetAccount()
     {
-        return $this->call('setaccount', [$address, $account]);
+        $this->assertTrue($this->bitcoinRPC->setAccount('address', 'account') === 'OK' && method_exists($this->bitcoinRPC, 'setAccount'));
     }
 
-    /**
-     *    <generate> is true or false to turn generation on or off.
-     * Generation is limited to [genproclimit] processors, -1 is unlimited
-     *
-     * @param $generate
-     * @param $genprocLimit
-     * @return mixed
-     */
-    public function setGenerate($generate, $genprocLimit)
+    public function testSetGenerate()
     {
-        return $this->call('setgenerate', [$generate, $genprocLimit]);
+        $this->assertTrue($this->bitcoinRPC->setGenerate('generate', 5) === 'OK' && method_exists($this->bitcoinRPC, 'setGenerate'));
     }
 
-    /**
-     * <amount> is a real and is rounded to the nearest 0.00000001
-     *
-     * @param $amount
-     * @return mixed
-     */
-    public function setTxFee($amount)
+     public function testSetTxFee()
     {
-        return $this->call('settxfee', $amount);
+        $this->assertTrue($this->bitcoinRPC->setTxFee(123) === 'OK' && method_exists($this->bitcoinRPC, 'setTxFee'));
     }
 
-    /**
-     * Sign a message with the private key of an address
-     *
-     * @param $address
-     * @param $message
-     * @return mixed
-     */
-    public function signMessage($address, $message)
+    public function testSignMessage()
     {
-        return $this->call('signmessage', [$address, $message]);
+        $this->assertTrue($this->bitcoinRPC->signMessage('address', 'message') === 'OK' && method_exists($this->bitcoinRPC, 'signMessage'));
     }
 
-    /**
-     * Adds signatures to a raw transaction and returns the resulting raw transaction
-     *
-     * @param $hexstring
-     * @param $params
-     * @param $privateKeys
-     * @return mixed
-     */
-    public function signRawTransaction($hexstring, $params, $privateKeys)
+    public function testSignRawTransaction()
     {
-        return $this->call('signrawtransaction', [$hexstring, $params, $privateKeys]);
+        $this->assertTrue($this->bitcoinRPC->signRawTransaction('hex', 'message','keys') === 'OK' && method_exists($this->bitcoinRPC, 'signRawTransaction'));
     }
 
-    /**
-     * Stop bitcoin server
-     *
-     * @return mixed
-     */
-    public function stop()
+    public function testStop()
     {
-        return $this->call('stop');
+        $this->assertTrue($this->bitcoinRPC->stop() === 'OK' && method_exists($this->bitcoinRPC, 'stop'));
     }
 
-    /**
-     * Attempts to submit new block to network
-     *
-     * @param $hexData
-     * @param $optionalParamsObj
-     * @return mixed
-     */
-    public function submitBlock($hexData, $optionalParamsObj)
+    public function testSubmitBlock()
     {
-        return $this->call('submitblock', [$hexData, $optionalParamsObj]);
+        $this->assertTrue($this->bitcoinRPC->submitBlock('hex','params') === 'OK' && method_exists($this->bitcoinRPC, 'submitBlock'));
     }
 
-    /**
-     * Returns an array of objects containing:
-     * "address" : receiving address
-     * "account" : the account of the receiving address
-     * "amount" : total amount received by the address
-     * "confirmations" : number of confirmations of the most recent transaction included
-     * To get a list of accounts on the system, execute bitcoind listreceivedbyaddress 0 true
-     *
-     * @param null|int $minConf default 1
-     * @param null|bool $includeEmpty default false
-     * @return array
-     */
-    public function listReceivedByAddress($minConf = null, $includeEmpty = null)
+    public function testListReceivedByAddress()
     {
-        return $this->call('listreceivedbyaddress', [$minConf, $includeEmpty]);
+        $this->assertTrue($this->bitcoinRPC->listReceivedByAddress(1,5) === 'OK' && method_exists($this->bitcoinRPC, 'listReceivedByAddress'));
     }
 
-    /**
-     * Get all transactions in blocks since block [blockhash], or all transactions if omitted.
-     * [target-confirmations] intentionally does not affect the list of returned transactions, but only affects the returned "lastblock" value
-     *
-     * @param $blockHash
-     * @param $targetConfirmations
-     * @return mixed
-     */
-    public function listSinceBlock($blockHash, $targetConfirmations)
+    public function testListSinceBlock()
     {
-        return $this->call('listsinceblock', [$blockHash, $targetConfirmations]);
+        $this->assertTrue($this->bitcoinRPC->listSinceBlock('hash','target') === 'OK' && method_exists($this->bitcoinRPC, 'listSinceBlock'));
     }
 
-    /**
-     * <amount> is a real and is rounded to 8 decimal places. Returns the transaction ID <txid> if successful.
-     *
-     * @param string $address
-     * @param float $amount
-     * @param null|string $comment
-     * @param null|string $commentTo
-     * @return mixed
-     */
-    public function sendToAddress($address, $amount, $comment = null, $commentTo = null)
+    public function testSendToAddress()
     {
-        $amount = round($amount, 8);
-        return $this->call('sendtoaddress', [$address, $amount, $comment, $commentTo]);
+        $this->assertTrue($this->bitcoinRPC->sendToAddress('address',123, 'comment', 'commentTo') === 'OK' && method_exists($this->bitcoinRPC, 'sendToAddress'));
     }
 
     /**
