@@ -1,105 +1,60 @@
 <?php
+
 /**
- * @author Alexey Samoylov <alexey.samoylov@gmail.com>
+ * Created by PhpStorm.
+ * User: Elena
+ * Date: 18.01.2018
+ * Time: 11:45
  */
 
-namespace YarCode\Bitcoin;
+use PHPUnit\Framework\TestCase;
+use YarCode\Bitcoin\BitcoinRPC;
 
-use JsonRPC\Client;
-
-class BitcoinRPC
+class ClientTest extends TestCase
 {
-    /** @var Client */
+    /** @var  PHPUnit_Framework_MockObject_MockObject $client */
     protected $client;
+    /** @var  BitcoinRPC $bitcoinRPC */
+    protected $bitcoinRPC;
 
-    /**
-     * @param string $host
-     * @param string $port
-     * @param string $user
-     * @param string $password
-     * @return static
-     */
-    public static function create($host, $port, $user, $password)
+    protected function setUp()
     {
-        $client = new Client("http://{$host}:{$port}/");
-        $client->authentication($user, $password);
+        $this->client = $this->getMockBuilder('\JsonRPC\Client')
+            ->setMethods(array('execute'))
+            ->getMock();
 
-        return new static($client);
+        $this->client->method('execute')->will($this->returnValue('OK'));
+        $this->bitcoinRPC = new BitcoinRPC($this->client);
     }
 
-    public function __construct(Client $client)
+    public function testCreate()
     {
-        $this->client = $client;
+        $this->assertInstanceOf(BitcoinRPC::class, $this->bitcoinRPC->create('localhost', '8080', 'root', ''));
     }
 
-    public function __call($name, $arguments)
+    public function testGetBalance()
     {
-        if (count($arguments)) {
-            $arguments = array_shift($arguments);
-        }
-        return $this->client->execute($name, $arguments);
+        $this->assertTrue($this->bitcoinRPC->getBalance() === 'OK' && method_exists($this->bitcoinRPC, 'getBalance'));
     }
 
-    protected function call($methodName, $params = [])
+    public function testAddMultiSigAddress()
     {
-        $actualParams = [];
-        foreach ($params as $param) {
-            if ($param === null) {
-                break;
-            }
-            $actualParams[] = $param;
-        }
-        return $this->client->execute($methodName, $actualParams);
+        $this->assertTrue($this->bitcoinRPC->addMultiSigAddress(1,[1]) === 'OK' && method_exists($this->bitcoinRPC, 'addMultiSigAddress'));
     }
 
-    /**
-     * Add a nrequired-to-sign multisignature address to the wallet. Each key is a bitcoin address or hex-encoded public key. If [account] is specified, assign address to [account].
-     * Returns a string containing the address.
-     *
-     * @param string $nRequired
-     * @param array $keys
-     * @param string $account
-     * @return mixed
-     */
-    public function addMultiSigAddress($nRequired, $keys, $account = null)
+    public function testAddNode()
     {
-        return $this->call('addmultisigaddress', [$nRequired, $keys, $account]);
+        $this->assertTrue($this->bitcoinRPC->addNode(1,'add') === 'OK' && method_exists($this->bitcoinRPC, 'addNode'));
     }
 
-    /**
-     * Attempts add or remove <node> from the addnode list or try a connection to <node> once.
-     *
-     * @param string $node
-     * @param string $mode One of: add/remove/onetry
-     * @return mixed
-     * @since 0.8
-     */
-    public function addNode($node, $mode)
+    public function testBackupWallet()
     {
-        return $this->call('addnode', [$node, $mode]);
+        $this->assertTrue($this->bitcoinRPC->backupWallet(1) === 'OK' && method_exists($this->bitcoinRPC, 'backupWallet'));
     }
 
-    /**
-     * Safely copies wallet.dat to destination, which can be a directory or a path with filename.
-     *
-     * @param string $path
-     * @return mixed
-     */
-    public function backupWallet($path)
+    public function testCreateMultiSig()
     {
-        return $this->call('backupwallet', [$path]);
-    }
-
-    /**
-     * Creates a multi-signature address and returns a json object
-     *
-     * @param string $nRequired
-     * @param array $keys
-     * @return mixed
-     */
-    public function createMultiSig($nRequired, $keys)
-    {
-        return $this->call('createmultisig', [$nRequired, $keys]);
+        $this->assertTrue($this->bitcoinRPC->createMultiSig(1,[1]) === 'OK' && method_exists($this->bitcoinRPC, 'createMultiSig'));
     }
 
     /**
@@ -205,18 +160,6 @@ class BitcoinRPC
         return $this->call('getaddressesbyaccount', [$account]);
     }
 
-    /**
-     * If [account] is not specified, returns the server's total available balance.
-     *  If [account] is specified, returns the balance in the account.
-     *
-     * @param null|string $account
-     * @param null|integer $minConf default 1
-     * @return float
-     */
-    public function getBalance($account = null, $minConf = null)
-    {
-        return $this->call('getbalance', [$account, $minConf]);
-    }
 
     /**
      * Returns the hash of the best (tip) block in the longest block chain.
