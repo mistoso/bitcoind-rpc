@@ -1,5 +1,5 @@
 {
-    "name": "yarcode/bitcoin-rpc",
+    "name": "yarcode/bitcoind-rpc",
     "description":"",
     "type": "yii2-extension",
     "license": "MIT",
