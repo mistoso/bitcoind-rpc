@@ -1,10 +1,17 @@
 {
     "name": "yarcode/bitcoind-rpc",
-    "description":"Bitcoin JSON-RPC client",
-    "type": "library",
-	"keywords": ["bitcoin","api","jsonrpc"],
-    "homepage": "https://github.com/yarcode/bitcoind-rpc",
+      "description":"Bitcoin JSON-RPC client",
+      "type": "library",
+	  "keywords": ["bitcoin","api","jsonrpc"],
+      "homepage": "https://github.com/yarcode/bitcoind-rpc",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexey Samoylov",
+            "email": "alexey.samoylov@gmail.com",
+            "role": "Developer"
+        }
+    ],
 
     "minimum-stability": "stable",
 
