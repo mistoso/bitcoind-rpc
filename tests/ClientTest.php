@@ -8,7 +8,7 @@
  */
 
 use PHPUnit\Framework\TestCase;
-use YarCode\Bitcoin\BitcoinRPC;
+use MistoSo\Bitcoin\BitcoinRPC;
 
 class ClientTest extends TestCase
 {
