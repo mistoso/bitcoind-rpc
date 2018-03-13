@@ -1,14 +1,14 @@
 {
-    "name": "yarcode/bitcoind-rpc",
+    "name": "mistoso/bitcoind-rpc",
       "description":"Bitcoin JSON-RPC client",
       "type": "library",
 	  "keywords": ["bitcoin","api","jsonrpc"],
-      "homepage": "https://github.com/yarcode/bitcoind-rpc",
+      "homepage": "https://github.com/mistoso/bitcoind-rpc",
     "license": "MIT",
     "authors": [
         {
-            "name": "Alexey Samoylov",
-            "email": "alexey.samoylov@gmail.com",
+            "name": "Misha Boo",
+            "email": "misha.boo.717@gmail.com",
             "role": "Developer"
         }
     ],
@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "YarCode\\Bitcoin\\": "./src"
+            "MistoSo\\Bitcoin\\": "./src"
         }
     },
     "classmap" : [
