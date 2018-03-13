@@ -1,9 +1,6 @@
 <?php
-/**
- * @author Alexey Samoylov <alexey.samoylov@gmail.com>
- */
 
-namespace YarCode\Bitcoin;
+namespace MistoSo\Bitcoin;
 
 use JsonRPC\Client;
 
